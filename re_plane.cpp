@@ -4,7 +4,7 @@
 #include<time.h>
 #include<windows.h>
 
-void gotoxy(int x,int y)
+void gotoxy(int x,int y)//å…‰æ ‡è·³è½¬å‡½æ•°
 {
 	HANDLE handle=GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
@@ -13,9 +13,9 @@ void gotoxy(int x,int y)
 	SetConsoleCursorPosition(handle,pos);
 }
 
-void HideCursor(void)
+void HideCursor(void)//å…‰æ ‡éšè—å‡½æ•°
 {
-	CONSOLE_CURSOR_INFO cursor_info = {1,0};//µÚ¶ş¸öÖµÎª0±íÊ¾Òş²Ø¹â±ê
+	CONSOLE_CURSOR_INFO cursor_info = {1,0};//ç¬¬äºŒä¸ªå€¼ä¸º0è¡¨ç¤ºéšè—å…‰æ ‡
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&cursor_info);
 }
 
@@ -27,26 +27,26 @@ int show(int *high,int *length,int *x_position,int *y_position,int *x_bullet,int
 		for(int j=0;j<*length;j++)
 		{
 			if((i==*y_position)&&(j==*x_position))
-				printf("*");     //ÏÔÊ¾·É»ú
+				printf("*");     //æ˜¾ç¤ºé£æœº
 			else if((i==*y_bullet)&&(j==*x_bullet)&&(*onfire==1))
-				printf("|");    //ÏÔÊ¾×Óµ¯
+				printf("|");    //æ˜¾ç¤ºå­å¼¹
 			else if((i==*y_enemy)&&(j==*x_enemy))
-				printf("+");    //ÏÔÊ¾µĞ»ú
+				printf("+");    //æ˜¾ç¤ºæ•Œæœº
 			else
-				printf(" ");   //ÏÔÊ¾¿ÕµØ
+				printf(" ");   //æ˜¾ç¤ºç©ºåœ°
 		}
-		if((*y_bullet==*y_enemy)&&(*x_bullet==*x_enemy))   //»÷ÖĞµĞ»ú
+		if((*y_bullet==*y_enemy)&&(*x_bullet==*x_enemy))   //å‡»ä¸­æ•Œæœº
 		{
 			*isfill=1;
 			*score+=1;
 		}
 		printf("\n");
 	}
-	printf("µ±Ç°µÃ·Ö£º%d",*score);
+	printf("å½“å‰å¾—åˆ†ï¼š%d",*score);
 	if(*score==300)
 	{
 		gotoxy(0,0);
-		printf("¹§Ï²Í¨¹Ø");
+		printf("æ­å–œé€šå…³");
 		system("pause");
 		return 1;
 	}
@@ -57,22 +57,22 @@ void updata_without_input(int *x_bullet,int *y_bullet,int *onfire,int *y_enemy,i
 	static int full_velocity=0;
 	srand(time(0));
 	if(*y_bullet>-1) 
-		*y_bullet-=1;//ÔÚ×Óµ¯Ã»·É³öÆÁÄ»µÄÊ±ºò£¬ÏòÉÏÒÆ¶¯
+		*y_bullet-=1;//åœ¨å­å¼¹æ²¡é£å‡ºå±å¹•çš„æ—¶å€™ï¼Œå‘ä¸Šç§»åŠ¨
 	else 
-		*onfire=0;//×Óµ¯×´Ì¬
+		*onfire=0;//å­å¼¹çŠ¶æ€
 	if(*isfill==0)
 	{
 		full_velocity+=1;
-		if(full_velocity%20==0)//Ã¿20´Î¾ÍÒÆ¶¯Ò»´Î£¬·ÀÖ¹ËÙ¶ÈÌ«¿ì
+		if(full_velocity%20==0)//æ¯20æ¬¡å°±ç§»åŠ¨ä¸€æ¬¡ï¼Œé˜²æ­¢é€Ÿåº¦å¤ªå¿«
 		*y_enemy+=1;
 		if(*y_enemy>=20){
-			*x_enemy=rand()%10;//³¬³ö½çÃæÖ®ºóÖØÖÃµĞ»ú
+			*x_enemy=rand()%10;//è¶…å‡ºç•Œé¢ä¹‹åé‡ç½®æ•Œæœº
 			*y_enemy=0;
 			*isfill=0;
 		}
 	}
 	else{
-		*x_enemy=rand()%10;//µĞ»ú±»»÷ÖĞºóÖØÖÃµĞ»ú
+		*x_enemy=rand()%10;//æ•Œæœºè¢«å‡»ä¸­åé‡ç½®æ•Œæœº
 		*y_enemy=0;
 		*isfill=0;
 	}
@@ -95,32 +95,32 @@ void updata_with_input(int *x_position,int *y_position,int *isfire,int *onfire ,
 			default  : *isfire=1;
 		}
 	}
-	if(*isfire==1) //Èç¹û¿ª»ğ
+	if(*isfire==1) //å¦‚æœå¼€ç«
 	{
 		*x_bullet=*x_position;
-		*y_bullet=*y_position-1;//ÔÚ·É»úÉÏ·½Éú³É×Óµ¯
-		*onfire=1;//×Óµ¯×´Ì¬
+		*y_bullet=*y_position-1;//åœ¨é£æœºä¸Šæ–¹ç”Ÿæˆå­å¼¹
+		*onfire=1;//å­å¼¹çŠ¶æ€
 	}
 	*isfire=0;
 }
 int main()
 {
 	int score=0;
-	int isfire=0,onfire=0;   //isfire¿ØÖÆÊÇ·ñ¿ª»ğ£¬onfire¿ØÖÆ×Óµ¯ÊÇ·ñÔÚ·É
-	int length=20,high=20;   //»­Ãæ´óĞ¡
-	int y_bullet=0,x_bullet=0;  //³õÊ¼»¯×Óµ¯Î»ÖÃ
-	int y_position=length/2,x_position=high/2;//³õÊ¼»¯·É»úÎ»ÖÃ
-	int x_enemy=high/2,y_enemy=0,isfill=0;//µĞ»úµÄÎ»ÖÃºÍÃüÖĞ×´Ì¬
+	int isfire=0,onfire=0;   //isfireæ§åˆ¶æ˜¯å¦å¼€ç«ï¼Œonfireæ§åˆ¶å­å¼¹æ˜¯å¦åœ¨é£
+	int length=20,high=20;   //ç”»é¢å¤§å°
+	int y_bullet=0,x_bullet=0;  //åˆå§‹åŒ–å­å¼¹ä½ç½®
+	int y_position=length/2,x_position=high/2;//åˆå§‹åŒ–é£æœºä½ç½®
+	int x_enemy=high/2,y_enemy=0,isfill=0;//æ•Œæœºçš„ä½ç½®å’Œå‘½ä¸­çŠ¶æ€
 
 	HideCursor();
 
 	while(1)
 	{
-		if(show( &high , &length , &x_position , &y_position , &x_bullet , &y_bullet , &onfire,&y_enemy,&x_enemy,&isfill,&score)/*»­ÃæÖÆÔìº¯Êı*/)	goto exit;
+		if(show( &high , &length , &x_position , &y_position , &x_bullet , &y_bullet , &onfire,&y_enemy,&x_enemy,&isfill,&score)/*ç”»é¢åˆ¶é€ å‡½æ•°*/)	goto exit;
 
-		  updata_with_input(&x_position,&y_position,&isfire,&onfire,&x_bullet,&y_bullet);   //ÓĞ¹ØÓÃ»§ÊäÈëµÄ¸üĞÂ
+		  updata_with_input(&x_position,&y_position,&isfire,&onfire,&x_bullet,&y_bullet);   //æœ‰å…³ç”¨æˆ·è¾“å…¥çš„æ›´æ–°
 
-		  updata_without_input(&x_bullet,&y_bullet,&onfire,&y_enemy,&x_enemy,&isfill);  //ÎŞ¹ØÓÃ»§ÊäÈëµÄ¸üĞÂ
+		  updata_without_input(&x_bullet,&y_bullet,&onfire,&y_enemy,&x_enemy,&isfill);  //æ— å…³ç”¨æˆ·è¾“å…¥çš„æ›´æ–°
 	}
 	exit:
 	return 0;
