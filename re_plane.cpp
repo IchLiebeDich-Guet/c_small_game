@@ -4,7 +4,7 @@
 #include<time.h>
 #include<windows.h>
 
-void gotoxy(int x,int y)//光标跳转函数
+void gotoxy(int x,int y)//光标跳转函数，有问题看Microsoft官方文档
 {
 	HANDLE handle=GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
@@ -13,7 +13,7 @@ void gotoxy(int x,int y)//光标跳转函数
 	SetConsoleCursorPosition(handle,pos);
 }
 
-void HideCursor(void)//光标隐藏函数
+void HideCursor(void)//光标隐藏函数，有问题看Microsoft官方文档
 {
 	CONSOLE_CURSOR_INFO cursor_info = {1,0};//第二个值为0表示隐藏光标
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&cursor_info);
